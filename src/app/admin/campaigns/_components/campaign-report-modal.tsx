@@ -4,6 +4,7 @@ import { message, Modal, Spin } from "antd";
 import { getCampaignReportsById } from "@/actions/campaigns";
 import DashboardCard from "@/components/dashboard-card";
 import DonationsTable from "@/components/donations-table";
+import { CampaignType } from "@/interfaces"; // ✅ Import added
 
 interface Props {
   showCampaignReportModal: boolean;
@@ -16,8 +17,8 @@ function CampaignReportsModal({
   setShowCampaignReportModal,
   selectedCampaign,
 }: Props) {
-  const [data = [], setData] = React.useState<any>(null);
-  const [loading = false, setLoading] = React.useState<boolean>(false);
+  const [data, setData] = React.useState<any>(null);
+  const [loading, setLoading] = React.useState<boolean>(false);
 
   const getData = async () => {
     try {
@@ -35,6 +36,7 @@ function CampaignReportsModal({
   useEffect(() => {
     getData();
   }, []);
+
   return (
     <Modal
       open={showCampaignReportModal}
@@ -59,7 +61,6 @@ function CampaignReportsModal({
               value={data.donationsCount.toString()}
               description="Total number of donations done by users for this campaign"
             />
-
             <DashboardCard
               cardTitle="Total Amount Raised"
               value={`$${data.totalAmountRaised}`}
