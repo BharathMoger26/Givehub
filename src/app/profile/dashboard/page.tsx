@@ -1,4 +1,4 @@
-// app/profile/dashboard/page.tsx (or .js if JS)
+// app/profile/dashboard/page.tsx
 import DashboardCard from "@/components/dashboard-card";
 import PageTitle from "@/components/page-title";
 import { connectDB } from "@/db/config";
@@ -9,7 +9,7 @@ import DonationsTable from "@/components/donations-table";
 import { getCurrentUserFromMongoDB } from "@/actions/users";
 import mongoose from "mongoose";
 
-// ✅ Tell Next.js this page is dynamic and not to prerender
+// ✅ Force dynamic rendering
 export const dynamic = "force-dynamic";
 
 connectDB();
@@ -17,7 +17,6 @@ connectDB();
 async function DashboardPage() {
   const mongoUser = await getCurrentUserFromMongoDB();
 
-  // ✅ Prevent rendering if user is not found
   if (!mongoUser?.data?._id) {
     return (
       <div className="text-red-500 text-center mt-10">User not found.</div>
@@ -55,9 +54,10 @@ async function DashboardPage() {
     .populate("campaign");
 
   return (
-    <div>
+    <div className="p-4 sm:p-6 md:p-8 max-w-screen-xl mx-auto">
       <PageTitle title="Dashboard" />
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5">
+
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mt-6">
         <DashboardCard
           cardTitle="Donations"
           description="Total number of Donations for all campaigns"
@@ -71,8 +71,10 @@ async function DashboardPage() {
         />
       </div>
 
-      <div className="mt-10">
-        <h1 className="text-2xl font-semibold">Recent Donations</h1>
+      <div className="mt-10 w-full overflow-x-auto">
+        <h1 className="text-xl sm:text-2xl font-semibold mb-4">
+          Recent Donations
+        </h1>
         <DonationsTable
           donations={JSON.parse(JSON.stringify(recentDonations))}
           pagination={true}

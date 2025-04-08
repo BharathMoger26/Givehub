@@ -18,7 +18,7 @@ export default function RootLayout({
   return (
     <ClerkProvider>
       <html lang="en">
-        <body className="p-1">
+        <body className="min-h-screen w-full bg-background text-foreground antialiased text-base p-4 sm:p-6 md:p-8 lg:p-10">
           <ThemeProvider>
             <LayoutProvider>{children}</LayoutProvider>
           </ThemeProvider>

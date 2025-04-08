@@ -17,16 +17,23 @@ function DashboardCard({
   onClickPath,
 }: DashboardCardProps) {
   const router = useRouter();
+
   return (
     <div
-      className="flex flex-col gap-3 p-5 border border-solid rounded border-gray-300 hover:border-gray-700 cursor-pointer "
+      className="flex flex-col justify-between gap-2 sm:gap-3 p-4 sm:p-5 border border-gray-200 rounded-lg bg-white hover:border-gray-400 hover:shadow-md transition-all duration-200 cursor-pointer w-full"
       onClick={() => {
         if (onClickPath) router.push(onClickPath);
       }}
     >
-      <span className="text-primary semi-bold">{cardTitle}</span>
-      <span className="text-xs text-gray-500">{description}</span>
-      <span className="text-5xl font-semibold text-gray-700">{value}</span>
+      <span className="text-base sm:text-lg font-semibold text-primary">
+        {cardTitle}
+      </span>
+
+      <span className="text-xs sm:text-sm text-gray-500">{description}</span>
+
+      <span className="text-3xl sm:text-4xl md:text-5xl font-bold text-gray-700">
+        {value}
+      </span>
     </div>
   );
 }

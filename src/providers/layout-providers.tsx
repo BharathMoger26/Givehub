@@ -9,7 +9,7 @@ import { Menu, X } from "lucide-react";
 
 function LayoutProvider({ children }: { children: React.ReactNode }) {
   const [currentUser, setCurrentUser] = useState<any>(null);
-  const [menuToShow, setMenuToShow] = useState<any>([]);
+  const [menuToShow, setMenuToShow] = useState<any[]>([]);
   const [menuOpen, setMenuOpen] = useState(false);
   const pathname = usePathname();
   const router = useRouter();
@@ -41,34 +41,35 @@ function LayoutProvider({ children }: { children: React.ReactNode }) {
       return null;
 
     return (
-      <div className="p-3 bg-primary flex justify-between items-center flex-wrap">
+      <header className="w-full bg-primary text-white px-4 py-3 flex justify-between items-center">
+        {/* Logo */}
         <h1
-          className="font-semibold text-2xl text-white cursor-pointer"
+          className="text-2xl font-bold cursor-pointer"
           onClick={() => router.push("/")}
         >
-          Givehub: A Hub for Giving
+          Givehub
         </h1>
 
         {/* Desktop Menu */}
-        <div className="hidden md:flex items-center gap-5 bg-white rounded py-2 px-3">
+        <div className="hidden md:flex items-center gap-5 bg-white text-primary rounded-md py-2 px-4">
           <Dropdown
             menu={{
-              items: menuToShow.map((menu: any) => ({
+              items: menuToShow.map((menu) => ({
                 key: menu.name,
                 label: menu.name,
                 onClick: () => router.push(menu.url),
               })),
             }}
           >
-            <Button type="link" className="text-primary">
+            <Button type="link" className="text-primary p-0">
               {currentUser?.userName}
             </Button>
           </Dropdown>
           <UserButton afterSignOutUrl="/sign-in" />
         </div>
 
-        {/* Mobile Menu Toggle */}
-        <div className="md:hidden flex items-center gap-3 text-white">
+        {/* Mobile Menu Icon */}
+        <div className="md:hidden">
           {menuOpen ? (
             <X
               size={28}
@@ -83,27 +84,35 @@ function LayoutProvider({ children }: { children: React.ReactNode }) {
             />
           )}
         </div>
+      </header>
+    );
+  };
 
-        {/* Mobile Dropdown */}
-        {menuOpen && (
-          <div className="w-full bg-white mt-2 rounded-md shadow-md md:hidden p-4 space-y-3">
-            {menuToShow.map((menu: any) => (
-              <div
-                key={menu.name}
-                className="text-primary font-medium cursor-pointer"
-                onClick={() => {
-                  router.push(menu.url);
-                  setMenuOpen(false);
-                }}
-              >
-                {menu.name}
-              </div>
-            ))}
-            <div className="pt-2">
-              <UserButton afterSignOutUrl="/sign-in" />
-            </div>
+  const getMobileMenu = () => {
+    if (
+      !menuOpen ||
+      pathname.includes("/sign-in") ||
+      pathname.includes("/sign-up")
+    )
+      return null;
+
+    return (
+      <div className="md:hidden w-full bg-white shadow-md px-4 py-3 space-y-3">
+        {menuToShow.map((menu) => (
+          <div
+            key={menu.name}
+            className="text-primary font-medium cursor-pointer"
+            onClick={() => {
+              router.push(menu.url);
+              setMenuOpen(false);
+            }}
+          >
+            {menu.name}
           </div>
-        )}
+        ))}
+        <div>
+          <UserButton afterSignOutUrl="/sign-in" />
+        </div>
       </div>
     );
   };
@@ -114,8 +123,8 @@ function LayoutProvider({ children }: { children: React.ReactNode }) {
 
     if (isPrivateRoute && !currentUser) {
       return (
-        <div className="flex justify-center items-center mt-20">
-          <Spin />
+        <div className="flex justify-center items-center h-[60vh]">
+          <Spin size="large" />
         </div>
       );
     }
@@ -128,7 +137,9 @@ function LayoutProvider({ children }: { children: React.ReactNode }) {
       );
     }
 
-    return <div className={isPrivateRoute ? "p-5" : ""}>{children}</div>;
+    return (
+      <main className={isPrivateRoute ? "p-4 md:p-6" : ""}>{children}</main>
+    );
   };
 
   useEffect(() => {
@@ -138,6 +149,7 @@ function LayoutProvider({ children }: { children: React.ReactNode }) {
   return (
     <div>
       {getHeader()}
+      {getMobileMenu()}
       {getContent()}
     </div>
   );

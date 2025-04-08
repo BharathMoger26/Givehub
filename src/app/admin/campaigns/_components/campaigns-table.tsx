@@ -1,11 +1,15 @@
 "use client";
 
-import { Button, message, Table } from "antd";
 import React from "react";
+import { Button, message, Table } from "antd";
 import { useRouter } from "next/navigation";
 import { deleteCampaign } from "@/actions/campaigns";
 import CampaignReportsModal from "./campaign-report-modal";
 import { CampaignType } from "@/interfaces";
+import type { ColumnsType } from "antd/es/table";
+
+// ✅ Declare Breakpoint type locally instead of importing internal AntD module
+type Breakpoint = "xs" | "sm" | "md" | "lg" | "xl" | "xxl";
 
 interface Props {
   campaigns: CampaignType[];
@@ -14,12 +18,10 @@ interface Props {
 
 function CampaignsTable({ campaigns, pagination = true }: Props) {
   const router = useRouter();
-  const [loading = false, setLoading] = React.useState<boolean>(false);
-  const [selectedCampaign = null, setSelectedCampaign] =
+  const [loading, setLoading] = React.useState<boolean>(false);
+  const [selectedCampaign, setSelectedCampaign] =
     React.useState<CampaignType | null>(null);
-
-  const [showReportModal = false, setShowReportModal] =
-    React.useState<boolean>(false);
+  const [showReportModal, setShowReportModal] = React.useState<boolean>(false);
 
   const onDelete = async (id: string) => {
     try {
@@ -34,56 +36,58 @@ function CampaignsTable({ campaigns, pagination = true }: Props) {
     }
   };
 
-  const columns = [
+  const columns: ColumnsType<CampaignType> = [
     {
       title: "Name",
       dataIndex: "name",
       key: "name",
+      responsive: ["xs", "sm", "md", "lg"] as Breakpoint[],
     },
     {
       title: "Organizer",
       dataIndex: "organizer",
       key: "organizer",
+      responsive: ["sm", "md", "lg"] as Breakpoint[],
     },
     {
       title: "Category",
       dataIndex: "category",
       key: "category",
-      render(category: string) {
-        return <span>{category.toUpperCase()}</span>;
-      },
+      responsive: ["md", "lg"] as Breakpoint[],
+      render: (category: string) => <span>{category.toUpperCase()}</span>,
     },
     {
       title: "Target Amount",
       dataIndex: "targetAmount",
       key: "targetAmount",
-      render(targetAmount: number) {
-        return `$${targetAmount}`;
-      },
+      responsive: ["md", "lg"] as Breakpoint[],
+      render: (targetAmount: number) => `$${targetAmount}`,
     },
     {
       title: "Collected Amount",
       dataIndex: "collectedAmount",
       key: "collectedAmount",
-      render(collectedAmount: number) {
-        return `$${collectedAmount}`;
-      },
+      responsive: ["md", "lg"] as Breakpoint[],
+      render: (collectedAmount: number) => `$${collectedAmount}`,
     },
     {
       title: "Start Date",
       dataIndex: "startDate",
       key: "startDate",
+      responsive: ["lg"] as Breakpoint[],
     },
     {
       title: "End Date",
       dataIndex: "endDate",
       key: "endDate",
+      responsive: ["lg"] as Breakpoint[],
     },
     {
       title: "Action",
       key: "action",
+      fixed: "right",
       render: (_: any, record: CampaignType) => (
-        <div className="flex gap-5">
+        <div className="flex flex-wrap gap-2">
           <Button
             onClick={() => {
               setSelectedCampaign(record);
@@ -111,13 +115,15 @@ function CampaignsTable({ campaigns, pagination = true }: Props) {
   ];
 
   return (
-    <div>
+    <div className="overflow-x-auto">
       <Table
         columns={columns}
         dataSource={campaigns}
         loading={loading}
         rowKey="_id"
-        pagination={pagination === undefined ? true : pagination}
+        pagination={pagination}
+        scroll={{ x: 1000 }}
+        className="min-w-[700px] w-full sm:min-w-[900px] lg:min-w-[1000px]"
       />
       {showReportModal && (
         <CampaignReportsModal

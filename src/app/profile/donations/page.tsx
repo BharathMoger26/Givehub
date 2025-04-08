@@ -6,7 +6,7 @@ import DonationModel from "@/models/donation-model";
 import { getCurrentUserFromMongoDB } from "@/actions/users";
 import DonationsTable from "@/components/donations-table";
 
-// ✅ Force dynamic rendering to avoid build-time errors
+// ✅ Force dynamic rendering
 export const dynamic = "force-dynamic";
 
 connectDB();
@@ -16,7 +16,7 @@ async function DonationsPage() {
 
   if (!mongouser?.data?._id) {
     return (
-      <div>
+      <div className="p-4 sm:p-6 md:p-8 max-w-screen-xl mx-auto">
         <PageTitle title="Donations" />
         <p className="text-center text-red-500 mt-4">
           User not found or not logged in.
@@ -31,12 +31,15 @@ async function DonationsPage() {
     .sort({ createdAt: -1 });
 
   return (
-    <div>
+    <div className="p-4 sm:p-6 md:p-8 max-w-screen-xl mx-auto w-full">
       <PageTitle title="Donations" />
-      <DonationsTable
-        donations={JSON.parse(JSON.stringify(donations))}
-        fromAdmin={false}
-      />
+
+      <div className="mt-6 w-full overflow-x-auto">
+        <DonationsTable
+          donations={JSON.parse(JSON.stringify(donations))}
+          fromAdmin={false}
+        />
+      </div>
     </div>
   );
 }

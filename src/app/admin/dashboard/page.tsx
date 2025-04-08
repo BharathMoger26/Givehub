@@ -8,6 +8,7 @@ import CampaignsTable from "../campaigns/_components/campaigns-table";
 import DonationsTable from "@/components/donations-table";
 
 connectDB();
+
 async function DashboardPage() {
   let [campaignsCount, donationsCount, amountRaised] = await Promise.all([
     CampaignModel.countDocuments({}),
@@ -21,6 +22,7 @@ async function DashboardPage() {
       },
     ]),
   ]);
+
   amountRaised = amountRaised[0]?.totalAmount || 0;
 
   const [recentCampaigns, recentDonations] = await Promise.all([
@@ -31,11 +33,13 @@ async function DashboardPage() {
       .populate("user")
       .populate("campaign"),
   ]);
+
   return (
-    <div>
+    <div className="px-4 py-6 sm:px-6 md:px-8 lg:px-10 max-w-7xl mx-auto">
       <PageTitle title="Dashboard" />
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5">
+      {/* Dashboard cards grid */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 mt-6">
         <DashboardCard
           cardTitle="Campaigns"
           description="Total number of campaigns including active and inactive"
@@ -55,8 +59,9 @@ async function DashboardPage() {
         />
       </div>
 
-      <div className="mt-10">
-        <h1 className="text-xl font-semibold text-gray-700">
+      {/* Recent Campaigns */}
+      <div className="mt-10 bg-white dark:bg-zinc-900 p-4 sm:p-6 rounded-2xl shadow-md overflow-x-auto">
+        <h1 className="text-lg sm:text-xl font-semibold text-gray-700 dark:text-gray-100 mb-4">
           Recent Campaigns
         </h1>
         <CampaignsTable
@@ -65,8 +70,9 @@ async function DashboardPage() {
         />
       </div>
 
-      <div className="mt-10">
-        <h1 className="text-xl font-semibold text-gray-700">
+      {/* Recent Donations */}
+      <div className="mt-10 bg-white dark:bg-zinc-900 p-4 sm:p-6 rounded-2xl shadow-md overflow-x-auto">
+        <h1 className="text-lg sm:text-xl font-semibold text-gray-700 dark:text-gray-100 mb-4">
           Recent Donations
         </h1>
         <DonationsTable

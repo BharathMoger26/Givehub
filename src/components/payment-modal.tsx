@@ -74,17 +74,31 @@ function PaymentModal({ campaign, amount, messageText }: PaymentModalProps) {
   };
 
   return (
-    <form onSubmit={onSubmit}>
-      <PaymentElement />
-      <AddressElement
-        options={{
-          allowedCountries: ["US", "IN"],
-          mode: "shipping",
-        }}
-      />
-      <div className="flex gap-5 justify-end mt-5">
-        <Button>Cancel</Button>
-        <Button type="primary" htmlType="submit" loading={loading}>
+    <form
+      onSubmit={onSubmit}
+      className="w-full max-w-2xl mx-auto px-4 py-6 sm:px-6 md:px-8 lg:px-10 flex flex-col gap-6"
+    >
+      <div className="w-full">
+        <PaymentElement />
+      </div>
+
+      <div className="w-full">
+        <AddressElement
+          options={{
+            allowedCountries: ["US", "IN"],
+            mode: "shipping",
+          }}
+        />
+      </div>
+
+      <div className="flex flex-col sm:flex-row gap-4 justify-end mt-4 w-full">
+        <Button className="w-full sm:w-auto">Cancel</Button>
+        <Button
+          type="primary"
+          htmlType="submit"
+          loading={loading}
+          className="w-full sm:w-auto"
+        >
           Pay
         </Button>
       </div>

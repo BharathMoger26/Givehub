@@ -54,19 +54,22 @@ const ImageUploader: React.FC<Props> = ({ onUploaded }) => {
   };
 
   return (
-    <Upload
-      customRequest={({ file }) => handleUpload(file as RcFile)}
-      showUploadList={false}
-      multiple
-    >
-      <Button
-        icon={<UploadOutlined />}
-        loading={uploading}
-        disabled={uploading}
+    <div className="w-full max-w-sm sm:max-w-md md:max-w-lg">
+      <Upload
+        customRequest={({ file }) => handleUpload(file as RcFile)}
+        showUploadList={false}
+        multiple
       >
-        {uploading ? "Uploading..." : "Upload Images"}
-      </Button>
-    </Upload>
+        <Button
+          icon={<UploadOutlined />}
+          loading={uploading}
+          disabled={uploading}
+          className="w-full sm:w-auto"
+        >
+          {uploading ? "Uploading..." : "Upload Images"}
+        </Button>
+      </Upload>
+    </div>
   );
 };
 

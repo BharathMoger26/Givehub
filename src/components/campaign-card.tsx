@@ -18,23 +18,30 @@ function CampaignCard({ campaign }: CampaignCardProps) {
 
   return (
     <div
-      className="border rounded border-gray-300 border-solid m-1 hover:border-gray-700 cursor-pointer"
+      className="border border-gray-200 rounded-lg overflow-hidden shadow-sm transition-all hover:shadow-md hover:border-gray-400 cursor-pointer bg-white w-full max-w-sm mx-auto"
       onClick={() => router.push(`/campaign/${campaign._id}`)}
     >
       <img
         src={mainImage}
         alt="Main Image"
-        className="w-full h-48 object-cover rounded-t"
+        className="w-full h-48 object-cover sm:h-56 md:h-60 lg:h-64"
       />
-      <div className="p-3">
-        <h1 className="text-sm font-semibold text-primary">{campaign.name}</h1>
-        <Progress percent={collectedPercentage} />
-        <span className="text-sm text-gray-500">
-          ${campaign.collectedAmount} raised of ${campaign.targetAmount}
-        </span>
-        <span className="text-xs text-gray-500 block mt-2 font-semibold">
+      <div className="p-4 space-y-2">
+        <h1 className="text-base font-semibold text-primary truncate">
+          {campaign.name}
+        </h1>
+
+        <Progress percent={collectedPercentage} size="small" />
+
+        <p className="text-sm text-gray-600">
+          <span className="font-semibold">${campaign.collectedAmount}</span>{" "}
+          raised of{" "}
+          <span className="font-semibold">${campaign.targetAmount}</span>
+        </p>
+
+        <p className="text-xs text-gray-500 font-medium">
           Organized by {campaign.organizer}
-        </span>
+        </p>
       </div>
     </div>
   );

@@ -22,6 +22,7 @@ function DonationsTable({
       title: "Campaign",
       dataIndex: "campaign",
       key: "campaign",
+      responsive: ["xs", "sm", "md", "lg", "xl"],
       render: (campaign: CampaignType | null) => {
         return <span>{campaign?.name || "Deleted Campaign"}</span>;
       },
@@ -30,6 +31,7 @@ function DonationsTable({
       title: "Amount",
       dataIndex: "amount",
       key: "amount",
+      responsive: ["xs", "sm", "md", "lg", "xl"],
       render: (amount: number) => {
         return <span>${amount}</span>;
       },
@@ -38,11 +40,13 @@ function DonationsTable({
       title: "Message",
       dataIndex: "message",
       key: "message",
+      responsive: ["sm", "md", "lg", "xl"], // Hide on extra-small screens
     },
     {
       title: "Date & Time",
       dataIndex: "createdAt",
       key: "createdAt",
+      responsive: ["xs", "sm", "md", "lg", "xl"],
       render: (createdAt: Date) => {
         return <span>{dayjs(createdAt).format("MMMM DD, YYYY hh:mm A")}</span>;
       },
@@ -50,27 +54,30 @@ function DonationsTable({
   ];
 
   if (fromAdmin) {
-    // Add user column after campaign column
     columns.splice(1, 0, {
       title: "User",
       dataIndex: "user",
       key: "user",
+      responsive: ["xs", "sm", "md", "lg", "xl"],
       render: (user: UserType | null) => {
         return <span>{user?.userName || "Anonymous"}</span>;
       },
     });
   }
 
-  if (fromCampaign)
+  if (fromCampaign) {
     columns = columns.filter((column) => column.key !== "campaign");
+  }
 
   return (
-    <div>
+    <div className="overflow-x-auto w-full">
       <Table
         dataSource={donations}
         columns={columns}
         pagination={pagination}
-        rowKey={(record) => record._id} // Ensure a unique key for each row
+        scroll={{ x: "max-content" }} // Enables horizontal scroll on small devices
+        rowKey={(record) => record._id}
+        className="min-w-[600px] sm:min-w-full"
       />
     </div>
   );

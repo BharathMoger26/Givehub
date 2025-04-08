@@ -22,14 +22,15 @@ const stripePromise = loadStripe(
 
 function DonationCard({ campaign, donations = [] }: DonationCardProps) {
   const [allDonations, setAllDonations] = React.useState<DonationType[]>([]);
-  const [showAllDonationsModal = false, setShowAllDonationsModal] =
+  const [showAllDonationsModal, setShowAllDonationsModal] =
     React.useState<boolean>(false);
-  const [showPaymentModel = false, setShowPaymentModel] =
+  const [showPaymentModel, setShowPaymentModel] =
     React.useState<boolean>(false);
-  const [loading = false, setLoading] = React.useState<boolean>(false);
-  const [clientSecret = "", setClientSecret] = React.useState<string>("");
+  const [loading, setLoading] = React.useState<boolean>(false);
+  const [clientSecret, setClientSecret] = React.useState<string>("");
   const [amount, setAmount] = React.useState<number>();
   const [message, setMessage] = React.useState("");
+
   const collectedPercentage = Math.round(
     (campaign.collectedAmount / campaign.targetAmount) * 100
   );
@@ -50,22 +51,28 @@ function DonationCard({ campaign, donations = [] }: DonationCardProps) {
 
   const donationList = (donation: DonationType) => {
     return (
-      <div className="p-2 rounded-sm bg-gray-100 flex flex-col">
-        <span className="text-gray-600 text-sm font-semibold">
+      <div
+        key={donation._id}
+        className="p-2 rounded-md bg-gray-100 flex flex-col"
+      >
+        <span className="text-gray-700 text-sm font-semibold">
           ${donation.amount} by {donation.user?.userName || "Anonymous"}
         </span>
-        <span className="text-gray-500 text-sm">{donation.message}</span>
+        <span className="text-gray-500 text-sm break-words">
+          {donation.message}
+        </span>
       </div>
     );
   };
 
   const getRecentDonations = () => {
-    if (donations?.length === 0)
+    if (donations?.length === 0) {
       return (
         <span className="text-gray-600 text-xs">
-          No donation yet. Be the first to donate to this campaign
+          No donation yet. Be the first to donate to this campaign.
         </span>
       );
+    }
     return donations?.map((donation) => donationList(donation));
   };
 
@@ -80,48 +87,53 @@ function DonationCard({ campaign, donations = [] }: DonationCardProps) {
   };
 
   return (
-    <div className="border border-solid rounded border-gray-300 p-5">
-      <span className="text-l text-primary font-semibold">
+    <div className="border border-gray-300 rounded-lg p-4 sm:p-6 bg-white shadow-sm w-full">
+      <div className="text-sm sm:text-base font-semibold text-primary mb-2">
         ${campaign.collectedAmount} raised of ${campaign.targetAmount}
-      </span>
-      <Progress percent={collectedPercentage} />
+      </div>
+
+      <Progress percent={collectedPercentage} className="mb-4" />
 
       {campaign.showDonarsInCampaign && (
         <>
-          <span className="text-semibold text-gray-600 text-sm">
+          <span className="font-medium text-gray-700 text-sm sm:text-base">
             Recent Donations
           </span>
 
-          <div className="flex flex-col gap-5 mt-5 mb-5">
+          <div className="flex flex-col gap-3 mt-4 mb-4">
             {getRecentDonations()}
           </div>
+
           {donations?.length > 0 && (
             <span
-              className="text-primary text-sm font-semibold cursor-pointer underline"
+              className="text-primary text-sm font-medium underline cursor-pointer"
               onClick={() => {
                 setShowAllDonationsModal(true);
                 getAllDonations();
               }}
             >
-              view all{" "}
+              View all
             </span>
           )}
         </>
       )}
-      <hr className="my-10" />
 
-      <div className="flex flex-col gap-5 mt-3">
+      <hr className="my-6 border-gray-300" />
+
+      <div className="flex flex-col gap-4 mt-4">
         <Input
-          placeholder="amount"
+          placeholder="Enter amount"
           type="number"
           onChange={(e) => setAmount(Number(e.target.value))}
           value={amount}
+          className="text-sm sm:text-base"
         />
         <TextArea
-          placeholder="message"
+          placeholder="Enter a message (optional)"
           rows={4}
           onChange={(e) => setMessage(e.target.value)}
           value={message}
+          className="text-sm sm:text-base"
         />
 
         <Button
@@ -130,11 +142,13 @@ function DonationCard({ campaign, donations = [] }: DonationCardProps) {
           disabled={!amount}
           onClick={getClientSecret}
           loading={loading}
+          className="mt-1"
         >
           Donate
         </Button>
       </div>
 
+      {/* Payment Modal */}
       {showPaymentModel && clientSecret && (
         <Modal
           open={showPaymentModel}
@@ -144,7 +158,7 @@ function DonationCard({ campaign, donations = [] }: DonationCardProps) {
           }}
           width={600}
           footer={null}
-          title="Complete your donation payment"
+          title="Complete your donation"
         >
           <Elements stripe={stripePromise} options={{ clientSecret }}>
             <PaymentModal
@@ -156,17 +170,16 @@ function DonationCard({ campaign, donations = [] }: DonationCardProps) {
         </Modal>
       )}
 
+      {/* All Donations Modal */}
       {showAllDonationsModal && (
         <Modal
           open={showAllDonationsModal}
-          onCancel={() => {
-            setShowAllDonationsModal(false);
-          }}
+          onCancel={() => setShowAllDonationsModal(false)}
           width={600}
           footer={null}
-          title="All Donations for this campaign"
+          title="All Donations"
         >
-          <div className="flex flex-col gap-5 my-5">
+          <div className="flex flex-col gap-4 my-4">
             {allDonations.map((donation) => donationList(donation))}
           </div>
         </Modal>

@@ -12,16 +12,19 @@ async function CampaignsPage() {
   const campaigns: CampaignType[] = (await CampaignModel.find().sort({
     createdAt: -1,
   })) as any;
+
   return (
-    <div>
-      <div className="flex justify-between items-center p-1">
+    <div className="px-4 py-6 sm:px-6 md:px-8 lg:px-10 max-w-6xl mx-auto">
+      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
         <PageTitle title="Campaigns" />
         <LinkButton
-          title="create campaign"
+          title="Create Campaign"
           path="/admin/campaigns/new-campaign"
         />
       </div>
-      <CampaignsTable campaigns={JSON.parse(JSON.stringify(campaigns))} />
+      <div className="bg-white dark:bg-zinc-900 p-4 sm:p-6 rounded-2xl shadow-md">
+        <CampaignsTable campaigns={JSON.parse(JSON.stringify(campaigns))} />
+      </div>
     </div>
   );
 }
