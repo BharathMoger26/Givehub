@@ -5,6 +5,7 @@ import React from "react";
 import { useRouter } from "next/navigation";
 import { deleteCampaign } from "@/actions/campaigns";
 import CampaignReportsModal from "./campaign-report-modal";
+import { CampaignType } from "@/interfaces";
 
 interface Props {
   campaigns: CampaignType[];

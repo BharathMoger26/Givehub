@@ -4,6 +4,7 @@ import { Elements } from "@stripe/react-stripe-js";
 import { loadStripe } from "@stripe/stripe-js";
 import { Button, Input, Modal, Progress } from "antd";
 const { TextArea } = Input;
+import { CampaignType, DonationType } from "@/interfaces";
 
 import React from "react";
 import PaymentModal from "./payment-modal";

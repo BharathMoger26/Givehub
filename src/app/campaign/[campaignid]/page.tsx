@@ -4,7 +4,7 @@ import CampaignModel from "@/models/campaign-model";
 import LinkButton from "@/components/link-button";
 import DonationCard from "@/components/donation-card";
 import DonationModel from "@/models/donation-model";
-
+import { CampaignType } from "@/interfaces";
 connectDB();
 
 interface SingleCampaignPageProps {

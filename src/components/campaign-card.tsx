@@ -1,8 +1,9 @@
-'use client';
+"use client";
 
-import React from 'react';
-import { Progress } from 'antd';
-import { useRouter } from 'next/navigation';
+import React from "react";
+import { Progress } from "antd";
+import { useRouter } from "next/navigation";
+import { CampaignType } from "@/interfaces";
 
 interface CampaignCardProps {
   campaign: CampaignType;

@@ -4,6 +4,7 @@ import { connectDB } from "@/db/config";
 import CampaignModel from "@/models/campaign-model";
 import React from "react";
 import CampaignsTable from "./_components/campaigns-table";
+import { CampaignType } from "@/interfaces";
 
 connectDB();
 

@@ -2,7 +2,6 @@
 import { connectDB } from "@/db/config";
 import UserModel from "@/models/user-model";
 import { currentUser } from "@clerk/nextjs/server";
-import { json } from "stream/consumers";
 
 connectDB();
 

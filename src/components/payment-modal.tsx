@@ -9,6 +9,7 @@ import {
 } from "@stripe/react-stripe-js";
 import { Button, message } from "antd";
 import { useRouter } from "next/navigation";
+import { CampaignType } from "@/interfaces";
 
 interface PaymentModalProps {
   campaign: CampaignType;

@@ -2,6 +2,7 @@
 import React from "react";
 import dayjs from "dayjs";
 import { Table } from "antd";
+import { CampaignType, DonationType, UserType } from "@/interfaces";
 
 interface DonationsTableProps {
   donations: DonationType[];
