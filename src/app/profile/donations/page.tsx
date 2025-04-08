@@ -1,16 +1,19 @@
-import React from 'react';
-import PageTitle from '@/components/page-title';
-import { connectDB } from '@/db/config';
-import DonationModel from '@/models/donation-model';
-import { getCurrentUserFromMongoDB } from '@/actions/users';
-import DonationsTable from '@/components/donations-table';
+// app/profile/donations/page.tsx
+import React from "react";
+import PageTitle from "@/components/page-title";
+import { connectDB } from "@/db/config";
+import DonationModel from "@/models/donation-model";
+import { getCurrentUserFromMongoDB } from "@/actions/users";
+import DonationsTable from "@/components/donations-table";
+
+// ✅ Force dynamic rendering to avoid build-time errors
+export const dynamic = "force-dynamic";
 
 connectDB();
 
 async function DonationsPage() {
   const mongouser = await getCurrentUserFromMongoDB();
 
-  // Handle undefined user
   if (!mongouser?.data?._id) {
     return (
       <div>
@@ -23,8 +26,8 @@ async function DonationsPage() {
   }
 
   const donations = await DonationModel.find({ user: mongouser.data._id })
-    .populate('campaign')
-    .populate('user')
+    .populate("campaign")
+    .populate("user")
     .sort({ createdAt: -1 });
 
   return (

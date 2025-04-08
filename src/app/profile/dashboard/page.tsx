@@ -1,3 +1,4 @@
+// app/profile/dashboard/page.tsx (or .js if JS)
 import DashboardCard from "@/components/dashboard-card";
 import PageTitle from "@/components/page-title";
 import { connectDB } from "@/db/config";
@@ -8,14 +9,26 @@ import DonationsTable from "@/components/donations-table";
 import { getCurrentUserFromMongoDB } from "@/actions/users";
 import mongoose from "mongoose";
 
+// ✅ Tell Next.js this page is dynamic and not to prerender
+export const dynamic = "force-dynamic";
+
 connectDB();
 
 async function DashboardPage() {
   const mongoUser = await getCurrentUserFromMongoDB();
+
+  // ✅ Prevent rendering if user is not found
+  if (!mongoUser?.data?._id) {
+    return (
+      <div className="text-red-500 text-center mt-10">User not found.</div>
+    );
+  }
+
   const userId = new mongoose.Types.ObjectId(mongoUser.data._id);
+
   let [donationsCount, amountRaised] = await Promise.all([
     DonationModel.countDocuments({
-      user: mongoUser?.data?._id,
+      user: mongoUser.data._id,
     }),
     DonationModel.aggregate([
       {
@@ -40,6 +53,7 @@ async function DashboardPage() {
     .sort({ createdAt: -1 })
     .limit(5)
     .populate("campaign");
+
   return (
     <div>
       <PageTitle title="Dashboard" />
