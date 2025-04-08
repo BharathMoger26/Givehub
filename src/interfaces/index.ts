@@ -1,4 +1,4 @@
-interface CampaignType {
+export interface CampaignType {
   _id: string;
   name: string;
   organizer: string;
@@ -13,7 +13,7 @@ interface CampaignType {
   createdBy: UserType;
 }
 
-interface UserType {
+export interface UserType {
   _id: string;
   userName: string;
   email: string;
@@ -23,7 +23,7 @@ interface UserType {
   clerkUserId: string;
 }
 
-interface DonationType {
+export interface DonationType {
   _id: string;
   amount: number;
   paymentId: string;
