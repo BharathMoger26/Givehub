@@ -1,4 +1,3 @@
-// components/ImageUploader.tsx
 "use client";
 
 import { Upload, Button, message } from "antd";
@@ -18,8 +17,11 @@ const CLOUDINARY_CLOUD_NAME =
 
 const ImageUploader: React.FC<Props> = ({ onUploaded }) => {
   const [uploadedUrls, setUploadedUrls] = React.useState<string[]>([]);
+  const [uploading, setUploading] = React.useState(false);
 
   const handleUpload = async (file: RcFile) => {
+    setUploading(true);
+
     const formData = new FormData();
     formData.append("file", file);
     formData.append("upload_preset", CLOUDINARY_UPLOAD_PRESET);
@@ -34,8 +36,6 @@ const ImageUploader: React.FC<Props> = ({ onUploaded }) => {
       );
 
       const data = await res.json();
-      console.log("Cloudinary response:", data); // Debug log
-
       if (data.secure_url) {
         const updatedUrls = [...uploadedUrls, data.secure_url];
         setUploadedUrls(updatedUrls);
@@ -49,7 +49,8 @@ const ImageUploader: React.FC<Props> = ({ onUploaded }) => {
       message.error("Upload failed.");
     }
 
-    return false; // Prevent default upload behavior
+    setUploading(false);
+    return false;
   };
 
   return (
@@ -58,7 +59,13 @@ const ImageUploader: React.FC<Props> = ({ onUploaded }) => {
       showUploadList={false}
       multiple
     >
-      <Button icon={<UploadOutlined />}>Upload Images</Button>
+      <Button
+        icon={<UploadOutlined />}
+        loading={uploading}
+        disabled={uploading}
+      >
+        {uploading ? "Uploading..." : "Upload Images"}
+      </Button>
     </Upload>
   );
 };
