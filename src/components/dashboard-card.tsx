@@ -20,18 +20,23 @@ function DashboardCard({
 
   return (
     <div
-      className="flex flex-col justify-between gap-2 sm:gap-3 p-4 sm:p-5 border border-gray-200 rounded-lg bg-white hover:border-gray-400 hover:shadow-md transition-all duration-200 cursor-pointer w-full"
+      className="w-full max-w-full md:max-w-sm lg:max-w-md xl:max-w-lg bg-white rounded-2xl p-4 sm:p-5 md:p-6 flex flex-col justify-between space-y-3 border border-gray-200 hover:border-gray-300 shadow-sm hover:shadow-lg transition-all duration-300 cursor-pointer"
       onClick={() => {
         if (onClickPath) router.push(onClickPath);
       }}
     >
-      <span className="text-base sm:text-lg font-semibold text-primary">
+      {/* Card Title */}
+      <h3 className="text-base sm:text-lg md:text-xl font-semibold text-primary truncate">
         {cardTitle}
-      </span>
+      </h3>
 
-      <span className="text-xs sm:text-sm text-gray-500">{description}</span>
+      {/* Description */}
+      <p className="text-xs sm:text-sm md:text-base text-gray-500 leading-snug line-clamp-2">
+        {description}
+      </p>
 
-      <span className="text-3xl sm:text-4xl md:text-5xl font-bold text-gray-700">
+      {/* Value */}
+      <span className="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-700">
         {value}
       </span>
     </div>

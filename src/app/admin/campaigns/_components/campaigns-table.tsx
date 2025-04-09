@@ -8,7 +8,6 @@ import CampaignReportsModal from "./campaign-report-modal";
 import { CampaignType } from "@/interfaces";
 import type { ColumnsType } from "antd/es/table";
 
-// ✅ Declare Breakpoint type locally instead of importing internal AntD module
 type Breakpoint = "xs" | "sm" | "md" | "lg" | "xl" | "xxl";
 
 interface Props {
@@ -87,7 +86,7 @@ function CampaignsTable({ campaigns, pagination = true }: Props) {
       key: "action",
       fixed: "right",
       render: (_: any, record: CampaignType) => (
-        <div className="flex flex-wrap gap-2">
+        <div className="flex flex-wrap gap-2 justify-start items-center">
           <Button
             onClick={() => {
               setSelectedCampaign(record);
@@ -115,16 +114,17 @@ function CampaignsTable({ campaigns, pagination = true }: Props) {
   ];
 
   return (
-    <div className="overflow-x-auto">
-      <Table
-        columns={columns}
-        dataSource={campaigns}
-        loading={loading}
-        rowKey="_id"
-        pagination={pagination}
-        scroll={{ x: 1000 }}
-        className="min-w-[700px] w-full sm:min-w-[900px] lg:min-w-[1000px]"
-      />
+    <div className="w-full overflow-auto p-2 md:p-4">
+      <div className="w-full min-w-[300px] sm:min-w-[600px] md:min-w-[800px] lg:min-w-[1000px]">
+        <Table
+          columns={columns}
+          dataSource={campaigns}
+          loading={loading}
+          rowKey="_id"
+          pagination={pagination}
+          scroll={{ x: true }}
+        />
+      </div>
       {showReportModal && (
         <CampaignReportsModal
           showCampaignReportModal={showReportModal}

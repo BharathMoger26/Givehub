@@ -1,15 +1,15 @@
 "use client";
+
 import { getStripeClientSecrete } from "@/actions/payments";
 import { Elements } from "@stripe/react-stripe-js";
 import { loadStripe } from "@stripe/stripe-js";
-import { Button, Input, Modal, Progress } from "antd";
+import { Button, Input, Modal, Progress, message as antdMessage } from "antd";
 const { TextArea } = Input;
-import { CampaignType, DonationType } from "@/interfaces";
 
 import React from "react";
 import PaymentModal from "./payment-modal";
 import { getDonationsByCampaignId } from "@/actions/donations";
-import { message as antdMessage } from "antd";
+import { CampaignType, DonationType } from "@/interfaces";
 
 interface DonationCardProps {
   campaign: CampaignType;
@@ -53,12 +53,12 @@ function DonationCard({ campaign, donations = [] }: DonationCardProps) {
     return (
       <div
         key={donation._id}
-        className="p-2 rounded-md bg-gray-100 flex flex-col"
+        className="p-3 rounded-lg bg-gray-100 flex flex-col gap-1"
       >
-        <span className="text-gray-700 text-sm font-semibold">
+        <span className="text-gray-800 text-sm sm:text-base font-semibold">
           ${donation.amount} by {donation.user?.userName || "Anonymous"}
         </span>
-        <span className="text-gray-500 text-sm break-words">
+        <span className="text-gray-600 text-xs sm:text-sm break-words">
           {donation.message}
         </span>
       </div>
@@ -66,14 +66,14 @@ function DonationCard({ campaign, donations = [] }: DonationCardProps) {
   };
 
   const getRecentDonations = () => {
-    if (donations?.length === 0) {
+    if (donations.length === 0) {
       return (
-        <span className="text-gray-600 text-xs">
-          No donation yet. Be the first to donate to this campaign.
+        <span className="text-gray-600 text-sm sm:text-base">
+          No donations yet. Be the first to contribute!
         </span>
       );
     }
-    return donations?.map((donation) => donationList(donation));
+    return donations.map((donation) => donationList(donation));
   };
 
   const getAllDonations = async () => {
@@ -87,40 +87,42 @@ function DonationCard({ campaign, donations = [] }: DonationCardProps) {
   };
 
   return (
-    <div className="border border-gray-300 rounded-lg p-4 sm:p-6 bg-white shadow-sm w-full">
-      <div className="text-sm sm:text-base font-semibold text-primary mb-2">
-        ${campaign.collectedAmount} raised of ${campaign.targetAmount}
+    <div className="w-full max-w-full bg-white border border-gray-300 rounded-2xl shadow-md p-4 sm:p-6 md:p-8 flex flex-col gap-6">
+      {/* Campaign Stats */}
+      <div className="flex flex-col gap-2">
+        <div className="text-base sm:text-lg md:text-xl font-semibold text-primary">
+          ${campaign.collectedAmount} raised of ${campaign.targetAmount}
+        </div>
+        <Progress percent={collectedPercentage} />
       </div>
 
-      <Progress percent={collectedPercentage} className="mb-4" />
-
+      {/* Recent Donations */}
       {campaign.showDonarsInCampaign && (
-        <>
-          <span className="font-medium text-gray-700 text-sm sm:text-base">
+        <div className="flex flex-col gap-3">
+          <span className="font-medium text-gray-800 text-sm sm:text-base">
             Recent Donations
           </span>
 
-          <div className="flex flex-col gap-3 mt-4 mb-4">
-            {getRecentDonations()}
-          </div>
+          <div className="flex flex-col gap-3">{getRecentDonations()}</div>
 
-          {donations?.length > 0 && (
-            <span
-              className="text-primary text-sm font-medium underline cursor-pointer"
+          {donations.length > 0 && (
+            <button
+              className="text-primary text-sm font-medium underline self-start"
               onClick={() => {
                 setShowAllDonationsModal(true);
                 getAllDonations();
               }}
             >
               View all
-            </span>
+            </button>
           )}
-        </>
+        </div>
       )}
 
-      <hr className="my-6 border-gray-300" />
+      <hr className="border-gray-300" />
 
-      <div className="flex flex-col gap-4 mt-4">
+      {/* Donation Form */}
+      <div className="flex flex-col gap-4">
         <Input
           placeholder="Enter amount"
           type="number"
@@ -130,25 +132,23 @@ function DonationCard({ campaign, donations = [] }: DonationCardProps) {
         />
         <TextArea
           placeholder="Enter a message (optional)"
-          rows={4}
+          rows={3}
           onChange={(e) => setMessage(e.target.value)}
           value={message}
           className="text-sm sm:text-base"
         />
-
         <Button
           type="primary"
           block
           disabled={!amount}
           onClick={getClientSecret}
           loading={loading}
-          className="mt-1"
         >
           Donate
         </Button>
       </div>
 
-      {/* Payment Modal */}
+      {/* Stripe Payment Modal */}
       {showPaymentModel && clientSecret && (
         <Modal
           open={showPaymentModel}

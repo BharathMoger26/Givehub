@@ -34,56 +34,66 @@ function CampaignReportsModal({
   };
 
   useEffect(() => {
-    getData();
-  }, []);
+    if (selectedCampaign?._id) getData();
+  }, [selectedCampaign]);
 
   return (
     <Modal
       open={showCampaignReportModal}
       onCancel={() => setShowCampaignReportModal(false)}
-      title=""
+      title={null}
       footer={null}
+      centered
       width="100%"
       style={{ top: 20 }}
-      className="!max-w-[95%] md:!max-w-[90%] lg:!max-w-[1000px]"
+      className="!max-w-[95%] sm:!max-w-[90%] lg:!max-w-[1000px]"
     >
-      <div className="flex flex-col gap-2 px-2 sm:px-4">
+      <div className="w-full p-4 sm:p-6 lg:p-8 space-y-6">
+        {/* Campaign Title */}
         <div>
-          <span className="font-semibold text-gray-500 block">Campaign</span>
-          <span className="text-sm font-semibold text-gray-700 block">
+          <p className="text-sm text-gray-500 font-medium">Campaign</p>
+          <p className="text-base text-gray-800 font-semibold mt-1">
             {selectedCampaign?.name}
-          </span>
+          </p>
         </div>
 
-        <hr className="my-4" />
+        <hr className="border-gray-200" />
 
-        <div className="flex justify-center">{loading && <Spin />}</div>
+        {/* Loader */}
+        {loading && (
+          <div className="flex justify-center py-10">
+            <Spin size="large" />
+          </div>
+        )}
 
-        {data && (
-          <div>
+        {/* Report Content */}
+        {!loading && data && (
+          <div className="flex flex-col gap-8">
+            {/* Dashboard Cards */}
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
               <DashboardCard
                 cardTitle="Total Donations"
                 value={data.donationsCount.toString()}
-                description="Total number of donations done by users for this campaign"
+                description="Total number of donations for this campaign"
               />
               <DashboardCard
                 cardTitle="Total Amount Raised"
                 value={`$${data.totalAmountRaised}`}
-                description="Total amount raised by this campaign through all donations till date"
+                description="Sum of all donations collected for this campaign"
               />
             </div>
 
-            <div className="mt-6">
-              <h1 className="text-sm font-semibold text-primary mb-2">
+            {/* Donations Table */}
+            <div>
+              <h2 className="text-base font-semibold text-primary mb-3">
                 Donations
-              </h1>
-              <div className="overflow-x-auto">
+              </h2>
+              <div className="overflow-auto max-w-full">
                 <DonationsTable
-                  fromCampaign={true}
+                  fromCampaign
                   donations={data.donations}
-                  fromAdmin={true}
-                  pagination={true}
+                  fromAdmin
+                  pagination
                 />
               </div>
             </div>

@@ -15,61 +15,73 @@ const options = [
 function Filters() {
   const searchParams = useSearchParams();
   const router = useRouter();
-  const [category = "", setCategory] = React.useState<string>(
+
+  const [category, setCategory] = React.useState<string>(
     searchParams.get("category") || ""
   );
-  const [organizer = "", setOrganizer] = React.useState<string>(
+  const [organizer, setOrganizer] = React.useState<string>(
     searchParams.get("organizer") || ""
   );
 
+  const handleReset = () => {
+    router.push(`/`);
+    setCategory("");
+    setOrganizer("");
+  };
+
+  const handleFilter = () => {
+    router.push(`/?category=${category}&organizer=${organizer}`);
+  };
+
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 my-5 items-end w-full">
-      {/* Category Filter */}
-      <div className="flex flex-col w-full">
-        <span className="text-sm font-semibold text-gray-500 mb-1">
-          Select Category
-        </span>
-        <Select
-          options={options}
-          value={category}
-          onChange={(value) => setCategory(value)}
-          className="w-full"
-        />
-      </div>
+    <div className="w-full my-5">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 items-end">
+        {/* Category Filter */}
+        <div className="flex flex-col w-full">
+          <label className="text-sm font-semibold text-gray-600 mb-1">
+            Select Category
+          </label>
+          <Select
+            options={options}
+            value={category}
+            onChange={(value) => setCategory(value)}
+            className="w-full"
+            size="large"
+          />
+        </div>
 
-      {/* Organizer Filter */}
-      <div className="flex flex-col w-full">
-        <span className="text-sm font-semibold text-gray-500 mb-1">
-          Search by Organizer
-        </span>
-        <Input
-          value={organizer}
-          onChange={(e: any) => setOrganizer(e.target.value)}
-          className="w-full"
-        />
-      </div>
+        {/* Organizer Filter */}
+        <div className="flex flex-col w-full">
+          <label className="text-sm font-semibold text-gray-600 mb-1">
+            Search by Organizer
+          </label>
+          <Input
+            value={organizer}
+            onChange={(e) => setOrganizer(e.target.value)}
+            className="w-full"
+            size="large"
+            placeholder="Enter organizer name"
+          />
+        </div>
 
-      {/* Buttons */}
-      <div className="flex flex-wrap gap-3 w-full sm:col-span-2 lg:col-span-1">
-        <Button
-          onClick={() => {
-            router.push(`/`);
-            setCategory("");
-            setOrganizer("");
-          }}
-          className="w-full sm:w-auto"
-        >
-          Reset
-        </Button>
-        <Button
-          onClick={() => {
-            router.push(`/?category=${category}&organizer=${organizer}`);
-          }}
-          type="primary"
-          className="w-full sm:w-auto"
-        >
-          Filter
-        </Button>
+        {/* Action Buttons */}
+        <div className="flex flex-col sm:flex-row gap-3 w-full sm:col-span-2 lg:col-span-2">
+          <Button
+            onClick={handleReset}
+            className="w-full sm:w-1/2"
+            size="large"
+          >
+            Reset
+          </Button>
+          <Button
+            type="primary"
+            onClick={handleFilter}
+            className="w-full sm:w-1/2"
+            size="large"
+          >
+            Filter
+          </Button>
+        </div>
       </div>
     </div>
   );

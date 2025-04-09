@@ -27,38 +27,45 @@ async function SingleCampaignPage({ params }: SingleCampaignPageProps) {
     .limit(5);
 
   const getProperty = (key: string, value: any) => (
-    <div className="flex flex-col text-sm">
-      <span className="font-semibold text-gray-800">{key}</span>
+    <div className="flex flex-col gap-1 text-sm sm:text-base">
+      <span className="font-medium text-gray-700">{key}</span>
       <span className="text-gray-500 break-words">{value}</span>
     </div>
   );
 
   return (
     campaign && (
-      <div className="p-4 sm:p-6 md:p-8 max-w-screen-xl mx-auto w-full space-y-6">
+      <div className="px-4 sm:px-6 md:px-10 lg:px-16 py-6 max-w-screen-2xl mx-auto w-full space-y-8">
+        {/* Back Button */}
         <LinkButton title="Back to Campaigns" path="/" />
 
-        <h1 className="text-xl sm:text-2xl md:text-3xl font-bold text-gray-700">
+        {/* Title */}
+        <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-800">
           {campaign.name}
         </h1>
 
-        <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
-          {/* Campaign Details Section */}
-          <div className="lg:col-span-3 space-y-6">
-            {/* Campaign Images */}
+        {/* Main Layout */}
+        <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
+          {/* Left: Campaign Info */}
+          <div className="lg:col-span-3 space-y-8">
+            {/* Images */}
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
               {campaign.images.map((image: string, index: number) => (
-                <img
+                <div
                   key={index}
-                  src={image}
-                  alt={`Campaign Image ${index + 1}`}
-                  className="w-full h-48 sm:h-56 md:h-64 object-cover rounded-md shadow-md"
-                />
+                  className="overflow-hidden rounded-xl shadow-md aspect-video"
+                >
+                  <img
+                    src={image}
+                    alt={`Campaign Image ${index + 1}`}
+                    className="w-full h-full object-cover"
+                  />
+                </div>
               ))}
             </div>
 
-            {/* Campaign Info */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+            {/* Campaign Meta Info */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
               {getProperty("Organizer", campaign.organizer)}
               {getProperty(
                 "Start Date",
@@ -72,13 +79,18 @@ async function SingleCampaignPage({ params }: SingleCampaignPageProps) {
               {getProperty("Collected Amount", `$${campaign.collectedAmount}`)}
             </div>
 
-            {/* Campaign Description */}
-            <p className="text-sm sm:text-base text-gray-600 leading-relaxed">
-              {campaign.description}
-            </p>
+            {/* Description */}
+            <div>
+              <h2 className="text-lg sm:text-xl font-semibold text-gray-700 mb-2">
+                Description
+              </h2>
+              <p className="text-gray-600 text-sm sm:text-base leading-relaxed">
+                {campaign.description}
+              </p>
+            </div>
           </div>
 
-          {/* Donation Section */}
+          {/* Right: Donation Section */}
           <div className="lg:col-span-1 w-full">
             <DonationCard
               donations={JSON.parse(JSON.stringify(recentFiveDonations))}

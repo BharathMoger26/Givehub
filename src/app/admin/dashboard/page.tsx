@@ -35,10 +35,10 @@ async function DashboardPage() {
   ]);
 
   return (
-    <div className="px-4 py-6 sm:px-6 md:px-8 lg:px-10 max-w-7xl mx-auto">
+    <div className="w-full px-4 sm:px-6 md:px-8 lg:px-10 xl:px-12 py-6 max-w-[95%] md:max-w-5xl lg:max-w-6xl xl:max-w-7xl mx-auto">
       <PageTitle title="Dashboard" />
 
-      {/* Dashboard cards grid */}
+      {/* Dashboard Cards */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 mt-6">
         <DashboardCard
           cardTitle="Campaigns"
@@ -60,7 +60,7 @@ async function DashboardPage() {
       </div>
 
       {/* Recent Campaigns */}
-      <div className="mt-10 bg-white dark:bg-zinc-900 p-4 sm:p-6 rounded-2xl shadow-md overflow-x-auto">
+      <div className="mt-10 bg-white dark:bg-zinc-900 p-4 sm:p-6 lg:p-8 rounded-2xl shadow-md overflow-x-auto">
         <h1 className="text-lg sm:text-xl font-semibold text-gray-700 dark:text-gray-100 mb-4">
           Recent Campaigns
         </h1>
@@ -71,7 +71,7 @@ async function DashboardPage() {
       </div>
 
       {/* Recent Donations */}
-      <div className="mt-10 bg-white dark:bg-zinc-900 p-4 sm:p-6 rounded-2xl shadow-md overflow-x-auto">
+      <div className="mt-10 bg-white dark:bg-zinc-900 p-4 sm:p-6 lg:p-8 rounded-2xl shadow-md overflow-x-auto">
         <h1 className="text-lg sm:text-xl font-semibold text-gray-700 dark:text-gray-100 mb-4">
           Recent Donations
         </h1>

@@ -14,7 +14,8 @@ async function CampaignsPage() {
   })) as any;
 
   return (
-    <div className="px-4 py-6 sm:px-6 md:px-8 lg:px-10 max-w-6xl mx-auto">
+    <div className="w-full px-4 sm:px-6 md:px-8 lg:px-10 xl:px-12 py-6 max-w-[95%] md:max-w-4xl lg:max-w-5xl xl:max-w-6xl mx-auto">
+      {/* Header Section */}
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
         <PageTitle title="Campaigns" />
         <LinkButton
@@ -22,7 +23,9 @@ async function CampaignsPage() {
           path="/admin/campaigns/new-campaign"
         />
       </div>
-      <div className="bg-white dark:bg-zinc-900 p-4 sm:p-6 rounded-2xl shadow-md">
+
+      {/* Table Section */}
+      <div className="bg-white dark:bg-zinc-900 p-4 sm:p-6 lg:p-8 rounded-2xl shadow-md overflow-x-auto">
         <CampaignsTable campaigns={JSON.parse(JSON.stringify(campaigns))} />
       </div>
     </div>

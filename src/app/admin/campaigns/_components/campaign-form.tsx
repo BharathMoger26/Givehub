@@ -59,7 +59,6 @@ function CampaignForm({ initialData, isEditForm = false }: Props) {
     }
 
     message.success(response.message);
-
     form.resetFields();
     setIsActive(false);
     setShowDonarsInCampaign(false);
@@ -77,33 +76,30 @@ function CampaignForm({ initialData, isEditForm = false }: Props) {
       onFinish={onFinish}
       form={form}
       initialValues={initialData}
-      className="p-4 sm:p-6 lg:p-8 bg-white rounded-xl shadow-md"
+      className="bg-white rounded-xl shadow-lg p-4 sm:p-6 lg:p-10"
     >
-      {/* Main Form Fields */}
+      {/* Main Fields */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
         {/* Name */}
-        <div className="col-span-full">
-          <Form.Item
-            label="Name"
-            name="name"
-            rules={[{ required: true, message: "Please insert a name" }]}
-          >
-            <Input />
-          </Form.Item>
-        </div>
+        <Form.Item
+          label="Name"
+          name="name"
+          className="col-span-full"
+          rules={[{ required: true, message: "Please insert a name" }]}
+        >
+          <Input />
+        </Form.Item>
 
         {/* Description */}
-        <div className="col-span-full">
-          <Form.Item
-            label="Description"
-            name="description"
-            rules={[{ required: true, message: "Please insert a description" }]}
-          >
-            <TextArea rows={4} />
-          </Form.Item>
-        </div>
+        <Form.Item
+          label="Description"
+          name="description"
+          className="col-span-full"
+          rules={[{ required: true, message: "Please insert a description" }]}
+        >
+          <TextArea rows={4} />
+        </Form.Item>
 
-        {/* Organizer */}
         <Form.Item
           label="Organizer"
           name="organizer"
@@ -114,7 +110,6 @@ function CampaignForm({ initialData, isEditForm = false }: Props) {
           <Input />
         </Form.Item>
 
-        {/* Target Amount */}
         <Form.Item
           label="Target Amount"
           name="targetAmount"
@@ -123,7 +118,6 @@ function CampaignForm({ initialData, isEditForm = false }: Props) {
           <Input type="number" min={100} />
         </Form.Item>
 
-        {/* Category */}
         <Form.Item
           label="Category"
           name="category"
@@ -132,7 +126,6 @@ function CampaignForm({ initialData, isEditForm = false }: Props) {
           <Select options={categories} />
         </Form.Item>
 
-        {/* Start Date */}
         <Form.Item
           label="Start Date"
           name="startDate"
@@ -141,7 +134,6 @@ function CampaignForm({ initialData, isEditForm = false }: Props) {
           <Input type="date" />
         </Form.Item>
 
-        {/* End Date */}
         <Form.Item
           label="End Date"
           name="endDate"
@@ -151,21 +143,21 @@ function CampaignForm({ initialData, isEditForm = false }: Props) {
         </Form.Item>
       </div>
 
-      {/* Image Uploader */}
+      {/* Image Upload */}
       <div className="mt-8">
-        <label className="block font-semibold mb-2">
+        <label className="block font-semibold mb-2 text-gray-800">
           Upload Campaign Images
         </label>
         <ImageUploader onUploaded={setImages} />
 
         {images.length > 0 && (
-          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4 mt-4">
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 xl:grid-cols-6 gap-4 mt-4">
             {images.map((url, index) => (
               <div key={index} className="relative group">
                 <img
                   src={url}
                   alt={`Uploaded ${index}`}
-                  className="w-full h-24 object-cover rounded-md border shadow-sm"
+                  className="w-full h-28 object-cover rounded-lg border shadow-sm"
                 />
                 <button
                   type="button"
@@ -180,14 +172,14 @@ function CampaignForm({ initialData, isEditForm = false }: Props) {
         )}
       </div>
 
-      {/* Toggles */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 mt-8">
-        <div className="flex items-center gap-4">
+      {/* Switches */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mt-10">
+        <div className="flex items-center space-x-4">
           <span className="text-gray-700 font-medium">Is Active?</span>
           <Switch checked={isActive} onChange={setIsActive} />
         </div>
 
-        <div className="flex items-center gap-4">
+        <div className="flex items-center space-x-4">
           <span className="text-gray-700 font-medium">Show Donors?</span>
           <Switch
             checked={showDonarsInCampaign}
@@ -197,9 +189,14 @@ function CampaignForm({ initialData, isEditForm = false }: Props) {
       </div>
 
       {/* Buttons */}
-      <div className="flex flex-col sm:flex-row justify-end gap-4 mt-10">
-        <Button onClick={() => router.push("/admin/campaigns")}>Cancel</Button>
-        <Button type="primary" htmlType="submit">
+      <div className="flex flex-col sm:flex-row justify-end items-stretch sm:items-center gap-4 mt-10">
+        <Button
+          className="w-full sm:w-auto"
+          onClick={() => router.push("/admin/campaigns")}
+        >
+          Cancel
+        </Button>
+        <Button className="w-full sm:w-auto" type="primary" htmlType="submit">
           {isEditForm ? "Update Campaign" : "Create Campaign"}
         </Button>
       </div>

@@ -1,4 +1,5 @@
 // app/profile/dashboard/page.tsx
+
 import DashboardCard from "@/components/dashboard-card";
 import PageTitle from "@/components/page-title";
 import { connectDB } from "@/db/config";
@@ -19,28 +20,19 @@ async function DashboardPage() {
 
   if (!mongoUser?.data?._id) {
     return (
-      <div className="text-red-500 text-center mt-10">User not found.</div>
+      <div className="text-red-500 text-center mt-10 text-lg font-medium">
+        User not found.
+      </div>
     );
   }
 
   const userId = new mongoose.Types.ObjectId(mongoUser.data._id);
 
   let [donationsCount, amountRaised] = await Promise.all([
-    DonationModel.countDocuments({
-      user: mongoUser.data._id,
-    }),
+    DonationModel.countDocuments({ user: mongoUser.data._id }),
     DonationModel.aggregate([
-      {
-        $match: {
-          user: userId,
-        },
-      },
-      {
-        $group: {
-          _id: null,
-          totalAmount: { $sum: "$amount" },
-        },
-      },
+      { $match: { user: userId } },
+      { $group: { _id: null, totalAmount: { $sum: "$amount" } } },
     ]),
   ]);
 
@@ -54,10 +46,12 @@ async function DashboardPage() {
     .populate("campaign");
 
   return (
-    <div className="p-4 sm:p-6 md:p-8 max-w-screen-xl mx-auto">
+    <div className="px-4 sm:px-6 md:px-10 lg:px-16 xl:px-20 py-6 max-w-screen-2xl mx-auto">
+      {/* Page Title */}
       <PageTitle title="Dashboard" />
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mt-6">
+      {/* Stats Section */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 mt-8">
         <DashboardCard
           cardTitle="Donations"
           description="Total number of Donations for all campaigns"
@@ -71,15 +65,18 @@ async function DashboardPage() {
         />
       </div>
 
-      <div className="mt-10 w-full overflow-x-auto">
-        <h1 className="text-xl sm:text-2xl font-semibold mb-4">
+      {/* Table Section */}
+      <div className="mt-12 w-full overflow-x-auto">
+        <h2 className="text-xl sm:text-2xl font-semibold mb-4 text-center sm:text-left">
           Recent Donations
-        </h1>
-        <DonationsTable
-          donations={JSON.parse(JSON.stringify(recentDonations))}
-          pagination={true}
-          fromAdmin={false}
-        />
+        </h2>
+        <div className="min-w-[320px]">
+          <DonationsTable
+            donations={JSON.parse(JSON.stringify(recentDonations))}
+            pagination={true}
+            fromAdmin={false}
+          />
+        </div>
       </div>
     </div>
   );

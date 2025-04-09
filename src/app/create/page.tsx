@@ -7,24 +7,37 @@ export default function CreateCampaignPage() {
   const [imageUrls, setImageUrls] = useState<string[]>([]);
 
   return (
-    <div className="p-4 sm:p-6 md:p-8 max-w-screen-xl mx-auto w-full">
-      <h1 className="text-xl sm:text-2xl md:text-3xl font-semibold mb-6 text-center md:text-left">
+    <div className="px-4 sm:px-6 md:px-10 lg:px-16 xl:px-20 py-6 max-w-screen-2xl mx-auto w-full">
+      <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-8 text-center md:text-left text-gray-800">
         Create Campaign
       </h1>
 
-      <ImageUploader onUploaded={setImageUrls} />
+      {/* Image Upload Section */}
+      <div className="mb-10">
+        <ImageUploader onUploaded={setImageUrls} />
+      </div>
 
+      {/* Preview Section */}
       {imageUrls.length > 0 && (
-        <div className="flex flex-wrap justify-center md:justify-start gap-4 mt-6">
-          {imageUrls.map((url, i) => (
-            <img
-              key={i}
-              src={url}
-              alt={`Uploaded ${i}`}
-              className="w-full sm:w-1/2 md:w-1/3 lg:w-1/4 max-w-xs rounded-lg shadow-md object-cover"
-            />
-          ))}
-        </div>
+        <>
+          <h2 className="text-lg sm:text-xl font-semibold text-gray-700 mb-4 text-center md:text-left">
+            Uploaded Images
+          </h2>
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+            {imageUrls.map((url, i) => (
+              <div
+                key={i}
+                className="w-full aspect-video overflow-hidden rounded-xl shadow-lg border border-gray-200"
+              >
+                <img
+                  src={url}
+                  alt={`Uploaded ${i}`}
+                  className="w-full h-full object-cover"
+                />
+              </div>
+            ))}
+          </div>
+        </>
       )}
     </div>
   );

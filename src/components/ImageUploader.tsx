@@ -54,21 +54,41 @@ const ImageUploader: React.FC<Props> = ({ onUploaded }) => {
   };
 
   return (
-    <div className="w-full max-w-sm sm:max-w-md md:max-w-lg">
-      <Upload
-        customRequest={({ file }) => handleUpload(file as RcFile)}
-        showUploadList={false}
-        multiple
-      >
-        <Button
-          icon={<UploadOutlined />}
-          loading={uploading}
-          disabled={uploading}
-          className="w-full sm:w-auto"
+    <div className="flex justify-center w-full px-4">
+      <div className="w-full sm:max-w-md md:max-w-lg lg:max-w-xl">
+        <Upload
+          customRequest={({ file }) => handleUpload(file as RcFile)}
+          showUploadList={false}
+          multiple
         >
-          {uploading ? "Uploading..." : "Upload Images"}
-        </Button>
-      </Upload>
+          <Button
+            icon={<UploadOutlined />}
+            loading={uploading}
+            disabled={uploading}
+            type="primary"
+            className="w-full text-base py-2"
+          >
+            {uploading ? "Uploading..." : "Upload Images"}
+          </Button>
+        </Upload>
+        {/* Optional: Preview uploaded image URLs */}
+        {uploadedUrls.length > 0 && (
+          <div className="mt-4 grid grid-cols-2 sm:grid-cols-3 gap-3">
+            {uploadedUrls.map((url, index) => (
+              <div
+                key={index}
+                className="w-full h-32 overflow-hidden rounded shadow"
+              >
+                <img
+                  src={url}
+                  alt={`Uploaded ${index}`}
+                  className="w-full h-full object-cover"
+                />
+              </div>
+            ))}
+          </div>
+        )}
+      </div>
     </div>
   );
 };

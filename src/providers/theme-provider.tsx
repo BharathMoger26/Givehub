@@ -8,15 +8,14 @@ function ThemeProvider({ children }: { children: React.ReactNode }) {
       theme={{
         token: {
           colorPrimary: "#164863",
-          borderRadius: 2,
+          borderRadius: 6,
         },
         components: {
           Button: {
             controlHeight: 40,
-            boxShadow: "none",
-            controlOutline: "none",
             colorPrimaryActive: "#164863",
             colorBorder: "#164863",
+            boxShadow: "none",
             borderColorDisabled: "transparent",
           },
           Input: {
@@ -28,6 +27,7 @@ function ThemeProvider({ children }: { children: React.ReactNode }) {
           Select: {
             controlHeight: 40,
             controlOutline: "none",
+            borderRadius: 4,
           },
         },
       }}

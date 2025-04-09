@@ -1,5 +1,5 @@
-// components/payment-modal.tsx
 "use client";
+
 import React from "react";
 import {
   AddressElement,
@@ -76,8 +76,12 @@ function PaymentModal({ campaign, amount, messageText }: PaymentModalProps) {
   return (
     <form
       onSubmit={onSubmit}
-      className="w-full max-w-2xl mx-auto px-4 py-6 sm:px-6 md:px-8 lg:px-10 flex flex-col gap-6"
+      className="w-full max-w-3xl mx-auto px-4 sm:px-6 md:px-8 lg:px-12 py-8 flex flex-col gap-8 bg-white rounded-2xl shadow-md"
     >
+      <h2 className="text-xl sm:text-2xl md:text-3xl font-semibold text-primary mb-2 text-center">
+        Complete Your Payment
+      </h2>
+
       <div className="w-full">
         <PaymentElement />
       </div>
@@ -91,8 +95,14 @@ function PaymentModal({ campaign, amount, messageText }: PaymentModalProps) {
         />
       </div>
 
-      <div className="flex flex-col sm:flex-row gap-4 justify-end mt-4 w-full">
-        <Button className="w-full sm:w-auto">Cancel</Button>
+      <div className="flex flex-col-reverse sm:flex-row justify-end gap-4 w-full pt-2">
+        <Button
+          htmlType="button"
+          className="w-full sm:w-auto"
+          onClick={() => router.back()}
+        >
+          Cancel
+        </Button>
         <Button
           type="primary"
           htmlType="submit"

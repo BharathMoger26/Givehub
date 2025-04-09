@@ -32,12 +32,12 @@ export default async function Home({ searchParams }: { searchParams: any }) {
   const campaigns = JSON.parse(JSON.stringify(result)) as CampaignType[];
 
   return (
-    <div className="px-4 sm:px-6 md:px-8 lg:px-10 xl:px-12 py-4 space-y-6">
+    <div className="max-w-screen-2xl mx-auto px-4 sm:px-6 md:px-10 lg:px-16 xl:px-20 py-6 sm:py-8 md:py-10 lg:py-12 space-y-8">
       {/* Filters Section */}
       <Filters />
 
       {/* Campaign Grid Section */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 sm:gap-8">
         {campaigns.map((campaign) => (
           <CampaignCard key={campaign._id} campaign={campaign} />
         ))}

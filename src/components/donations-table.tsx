@@ -2,6 +2,7 @@
 import React from "react";
 import dayjs from "dayjs";
 import { Table } from "antd";
+import type { ColumnsType } from "antd/es/table";
 import { CampaignType, DonationType, UserType } from "@/interfaces";
 
 interface DonationsTableProps {
@@ -17,67 +18,71 @@ function DonationsTable({
   fromAdmin = false,
   fromCampaign = false,
 }: DonationsTableProps) {
-  let columns: any[] = [
-    {
+  const columns: ColumnsType<DonationType> = [
+    !fromCampaign && {
       title: "Campaign",
       dataIndex: "campaign",
       key: "campaign",
       responsive: ["xs", "sm", "md", "lg", "xl"],
-      render: (campaign: CampaignType | null) => {
-        return <span>{campaign?.name || "Deleted Campaign"}</span>;
-      },
+      render: (campaign: CampaignType | null) => (
+        <span className="whitespace-nowrap text-sm text-gray-700">
+          {campaign?.name || "Deleted Campaign"}
+        </span>
+      ),
+    },
+    fromAdmin && {
+      title: "User",
+      dataIndex: "user",
+      key: "user",
+      responsive: ["xs", "sm", "md", "lg", "xl"],
+      render: (user: UserType | null) => (
+        <span className="whitespace-nowrap text-sm text-gray-700">
+          {user?.userName || "Anonymous"}
+        </span>
+      ),
     },
     {
       title: "Amount",
       dataIndex: "amount",
       key: "amount",
       responsive: ["xs", "sm", "md", "lg", "xl"],
-      render: (amount: number) => {
-        return <span>${amount}</span>;
-      },
+      render: (amount: number) => (
+        <span className="whitespace-nowrap text-sm text-green-600">
+          ${amount}
+        </span>
+      ),
     },
     {
       title: "Message",
       dataIndex: "message",
       key: "message",
-      responsive: ["sm", "md", "lg", "xl"], // Hide on extra-small screens
+      responsive: ["md", "lg", "xl"], // Hidden on small devices
+      render: (message: string) => (
+        <span className="text-sm text-gray-600 break-words">{message}</span>
+      ),
     },
     {
       title: "Date & Time",
       dataIndex: "createdAt",
       key: "createdAt",
       responsive: ["xs", "sm", "md", "lg", "xl"],
-      render: (createdAt: Date) => {
-        return <span>{dayjs(createdAt).format("MMMM DD, YYYY hh:mm A")}</span>;
-      },
+      render: (createdAt: Date) => (
+        <span className="text-sm text-gray-700 whitespace-nowrap">
+          {dayjs(createdAt).format("MMM DD, YYYY hh:mm A")}
+        </span>
+      ),
     },
-  ];
-
-  if (fromAdmin) {
-    columns.splice(1, 0, {
-      title: "User",
-      dataIndex: "user",
-      key: "user",
-      responsive: ["xs", "sm", "md", "lg", "xl"],
-      render: (user: UserType | null) => {
-        return <span>{user?.userName || "Anonymous"}</span>;
-      },
-    });
-  }
-
-  if (fromCampaign) {
-    columns = columns.filter((column) => column.key !== "campaign");
-  }
+  ].filter(Boolean) as ColumnsType<DonationType>; // Filter out falsy columns
 
   return (
-    <div className="overflow-x-auto w-full">
+    <div className="w-full overflow-x-auto">
       <Table
         dataSource={donations}
         columns={columns}
         pagination={pagination}
-        scroll={{ x: "max-content" }} // Enables horizontal scroll on small devices
+        scroll={{ x: 800 }} // Enables horizontal scroll on small devices
         rowKey={(record) => record._id}
-        className="min-w-[600px] sm:min-w-full"
+        className="w-full min-w-[700px]"
       />
     </div>
   );
