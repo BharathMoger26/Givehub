@@ -6,7 +6,7 @@ import { ClerkProvider } from "@clerk/nextjs";
 import LayoutProvider from "@/providers/layout-providers";
 
 export const metadata: Metadata = {
-  title: "Givehub: A Hub for Giving",
+  title: "",
   description:
     "A platform to empower giving and make social impact accessible.",
 };
