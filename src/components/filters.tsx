@@ -34,7 +34,7 @@ function Filters() {
   };
 
   return (
-    <div className="w-full my-5">
+    <div className="w-full my-5 px-2 sm:px-0">
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 items-end">
         {/* Category Filter */}
         <div className="flex flex-col w-full">

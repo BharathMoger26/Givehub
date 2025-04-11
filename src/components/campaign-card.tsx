@@ -18,7 +18,7 @@ function CampaignCard({ campaign }: CampaignCardProps) {
 
   return (
     <div
-      className="w-full max-w-[350px] sm:max-w-[400px] md:max-w-[440px] lg:max-w-[360px] xl:max-w-[400px] mx-auto bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-lg border border-gray-200 hover:border-gray-300 transition-all cursor-pointer"
+      className="w-full max-w-full sm:max-w-sm md:max-w-md lg:max-w-xs xl:max-w-sm mx-auto bg-white rounded-2xl overflow-hidden shadow-md hover:shadow-lg border border-gray-200 hover:border-gray-300 transition-all cursor-pointer flex flex-col"
       onClick={() => router.push(`/campaign/${campaign._id}`)}
     >
       {/* Campaign Image */}
@@ -29,9 +29,9 @@ function CampaignCard({ campaign }: CampaignCardProps) {
       />
 
       {/* Campaign Content */}
-      <div className="p-3 sm:p-4 space-y-2">
+      <div className="p-4 space-y-2 flex flex-col justify-between h-full">
         {/* Campaign Name */}
-        <h1 className="text-base md:text-lg font-semibold text-primary truncate">
+        <h1 className="text-base md:text-lg font-semibold text-primary line-clamp-2">
           {campaign.name}
         </h1>
 
